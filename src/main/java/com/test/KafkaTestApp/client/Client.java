@@ -1,11 +1,13 @@
 package com.test.KafkaTestApp.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Value;
 
+@Value
 public class Client {
 
-  private final Long clientId;
-  private final String email;
+  Long clientId;
+  String email;
 
   public Client(
       @JsonProperty("clientId") Long clientId,
@@ -13,13 +15,5 @@ public class Client {
   ) {
     this.clientId = clientId;
     this.email = email;
-  }
-
-  public Long getClientId() {
-    return clientId;
-  }
-
-  public String getEmail() {
-    return email;
   }
 }

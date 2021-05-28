@@ -1,5 +1,6 @@
 package com.test.KafkaTestApp.client;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,13 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("clients")
+@AllArgsConstructor
 public class ClientController {
 
   private final ClientManager clientManager;
-
-  public ClientController(ClientManager clientManager) {
-    this.clientManager = clientManager;
-  }
 
   @PostMapping
   @ResponseStatus(value = HttpStatus.CREATED)

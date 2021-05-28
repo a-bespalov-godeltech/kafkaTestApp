@@ -1,25 +1,23 @@
 package com.test.KafkaTestApp.client;
 
+import com.test.KafkaTestApp.config.KafkaConfig;
+import lombok.AllArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class ClientManager {
 
-  public static final String CLIENT_KAFKA_TOPIC = "client";
-
   private final KafkaTemplate<String, Client> kafkaTemplate;
-
-  public ClientManager(KafkaTemplate<String, Client> kafkaTemplate) {
-    this.kafkaTemplate = kafkaTemplate;
-  }
+  private final KafkaConfig kafkaConfig;
 
   public void create(Client client) {
-    kafkaTemplate.send(CLIENT_KAFKA_TOPIC, client);
+    kafkaTemplate.send(kafkaConfig.getClientTopic(), client);
   }
 
-  @KafkaListener(id = "KafkaListenerExample", topics = {CLIENT_KAFKA_TOPIC})
+  @KafkaListener(id = "KafkaListenerExample", topics = {"#{'${spring.kafka.client-topic}'}"})
   public void consume(Client client) {
     System.out.println(client.getClientId() + " " + client.getEmail());
   }
