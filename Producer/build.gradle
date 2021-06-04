@@ -19,6 +19,10 @@ jar {
 				'Main-Class': 'com.Producer.ProducerApplication'
 		)
 	}
+
+	from {
+		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+	}
 }
 
 dependencies {
