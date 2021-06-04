@@ -1,4 +1,4 @@
-package com.test.KafkaTestApp.client;
+package com.Producer.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;

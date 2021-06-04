@@ -27,11 +27,19 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_CREATE_TOPICS: "client:1:1"
 
-  app:
-    container_name: apple
-    hostname: apple
-    build: ../KafkaTestApp
+  producer:
+    container_name: producer_app
+    hostname: producer_app
+    build: ../KafkaTestApp/Producer
     depends_on:
       - kafka
     ports:
       - 8080:8080
+  consumer:
+    container_name: consumer_app
+    hostname: consumer_app
+    build: ../KafkaTestApp/Consumer
+    depends_on:
+      - producer
+    ports:
+      - 8081:8081

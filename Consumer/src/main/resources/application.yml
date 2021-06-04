@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 spring:
   kafka:
     bootstrap-servers: kafka:9092
@@ -5,8 +8,6 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
-        spring.json.trusted.packages: "com.test.KafkaTestApp.client"
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+        spring.json.trusted.packages: "com.Producer.client"
     client-topic: client
+

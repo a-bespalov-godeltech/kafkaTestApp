@@ -18,6 +18,6 @@ EXPOSE 8080
 
 RUN mkdir /app
 
-COPY --from=build /home/gradle/src/build/libs/*.jar /app/spring-boot-application.jar
+COPY --from=build /home/gradle/src/KafkaTestApp/Producer/build/libs/*.jar /app/producer.jar
 
-ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-jar","/app/spring-boot-application.jar"]
+ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-jar","/app/producer.jar"]
