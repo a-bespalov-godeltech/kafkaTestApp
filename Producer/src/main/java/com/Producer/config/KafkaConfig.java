@@ -1,4 +1,4 @@
-package com.test.KafkaTestApp.config;
+package com.Producer.config;
 
 import lombok.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
