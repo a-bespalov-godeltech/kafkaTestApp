@@ -1,4 +1,4 @@
-package com.Producer.config;
+package com.producer.config;
 
 import lombok.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;

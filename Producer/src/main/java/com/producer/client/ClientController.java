@@ -1,4 +1,4 @@
-package com.Producer.client;
+package com.producer.client;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

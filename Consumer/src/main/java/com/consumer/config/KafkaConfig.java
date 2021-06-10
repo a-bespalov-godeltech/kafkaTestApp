@@ -1,4 +1,4 @@
-package com.Consumer.config;
+package com.consumer.config;
 
 import lombok.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;

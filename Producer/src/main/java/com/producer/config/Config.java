@@ -1,6 +1,6 @@
-package com.Producer.config;
+package com.producer.config;
 
-import com.Producer.client.Client;
+import com.producer.client.Client;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

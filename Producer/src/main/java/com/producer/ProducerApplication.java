@@ -1,6 +1,6 @@
-package com.Producer;
+package com.producer;
 
-import com.Producer.config.KafkaConfig;
+import com.producer.config.KafkaConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

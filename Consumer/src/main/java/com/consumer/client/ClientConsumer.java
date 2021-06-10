@@ -1,6 +1,5 @@
-package com.Consumer.client;
+package com.consumer.client;
 
-import com.Producer.client.Client;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
