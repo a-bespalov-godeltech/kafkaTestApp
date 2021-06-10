@@ -28,17 +28,13 @@ services:
       KAFKA_CREATE_TOPICS: "client:1:1"
 
   producer:
-    container_name: producer_app
-    hostname: producer_app
-    build: ../KafkaTestApp/Producer
+    image: test/kafka-producer-app
     depends_on:
       - kafka
     ports:
       - 8080:8080
   consumer:
-    container_name: consumer_app
-    hostname: consumer_app
-    build: ../KafkaTestApp/Consumer
+    image: test/kafka-consumer-app
     depends_on:
       - producer
     ports:
