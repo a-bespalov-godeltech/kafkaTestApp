@@ -1,9 +1,9 @@
 package com.consumer.client;
 
 import com.client.Client;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -11,15 +11,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ClientConsumer {
 
-  private final List<Client> clients = new ArrayList<>();
+  Logger logger = LoggerFactory.getLogger(ClientConsumer.class);
 
   @KafkaListener(id = "KafkaListenerExample", topics = "${spring.kafka.client-topic}")
   public void consume(Client client) {
-    System.out.println(client.getClientId() + " " + client.getEmail());
-    clients.add(client);
-  }
-
-  public List<Client> getClients() {
-    return clients;
+    logger.info(client.toString());
   }
 }
