@@ -1,25 +1,24 @@
-package com.consumer.client;
+package com.producer.client;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.client.Client;
-import java.util.Collections;
+import com.producer.config.KafkaConfig;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.stream.Collectors;
+import java.util.concurrent.TimeUnit;
+import lombok.SneakyThrows;
 import lombok.val;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.listener.KafkaMessageListenerContainer;
 import org.springframework.kafka.listener.MessageListener;
@@ -35,24 +34,26 @@ import org.springframework.test.annotation.DirtiesContext;
 @EmbeddedKafka(
     partitions = 1,
     brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
-class ClientConsumerTest {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class ClientProducerIntegrationTest {
 
   BlockingQueue<ConsumerRecord<String, Client>> records;
   KafkaMessageListenerContainer<String, Client> container;
+
   @Autowired
-  private KafkaTemplate<String, String> kafkaTemplate;
+  private ClientProducer producer;
+
   @Autowired
-  private ClientConsumer consumer;
+  private KafkaConfig kafkaConfig;
+
   @Autowired
   private EmbeddedKafkaBroker embeddedKafkaBroker;
 
-  @BeforeEach
+  @BeforeAll
   void setUp() {
-    val configs = new HashMap<>(
-        KafkaTestUtils.consumerProps("consumer", "false", embeddedKafkaBroker));
-    val consumerFactory = new DefaultKafkaConsumerFactory<>(configs, new StringDeserializer(),
-        new JsonDeserializer<>(Client.class));
-    val containerProperties = new ContainerProperties("client");
+    val configs = new HashMap<>(KafkaTestUtils.consumerProps("consumer", "false", embeddedKafkaBroker));
+    val consumerFactory = new DefaultKafkaConsumerFactory<>(configs, new StringDeserializer(), new JsonDeserializer<>(Client.class));
+    val containerProperties = new ContainerProperties(kafkaConfig.getClientTopic());
     container = new KafkaMessageListenerContainer<>(consumerFactory, containerProperties);
     records = new LinkedBlockingQueue<>();
     container.setupMessageListener((MessageListener<String, Client>) records::add);
@@ -60,22 +61,22 @@ class ClientConsumerTest {
     ContainerTestUtils.waitForAssignment(container, embeddedKafkaBroker.getPartitionsPerTopic());
   }
 
-  @AfterEach
+  @AfterAll
   void tearDown() {
     container.stop();
   }
 
   @Test
-  public void test() throws InterruptedException, ExecutionException {
+  @SneakyThrows
+  void clientRecordShouldSendToKafka() {
 
-    // raw JSON just to not over-engineering in this test
-    kafkaTemplate.send("client", "{\"clientId\": 1, \"email\": \"mail\"}");
-    Thread.sleep(2000);
+    Client client = new Client(1L, "client@mail");
+    producer.create(client);
 
-    List<Client> clients = consumer.getClients().stream()
-        .filter(c -> c.getClientId() == 1L)
-        .collect(Collectors.toList());
-    assertThat(clients).isEqualTo(Collections.singletonList(new Client(1L, "mail")));
+    ConsumerRecord<String, Client> clientRecord = records.poll(5, TimeUnit.SECONDS);
+    assertThat(clientRecord).isNotNull();
 
+    final Client clientRecordValue = clientRecord.value();
+    assertThat(clientRecordValue).isEqualTo(client);
   }
 }
