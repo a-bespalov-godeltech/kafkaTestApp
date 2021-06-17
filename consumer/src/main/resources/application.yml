@@ -9,3 +9,14 @@ spring:
         spring.json.trusted.packages: "*"
     client-topic: client
 
+  jpa:
+    hibernate:
+      ddl-auto: update  # creates tables in database from @Entity classes
+    show-sql: true      # shows generated SQL in console
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  datasource:
+    url: jdbc:mysql://db:3306/clients
+    username: godel
+    password: password123
+    driver-class-name: com.mysql.cj.jdbc.Driver
