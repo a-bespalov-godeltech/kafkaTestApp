@@ -8,6 +8,7 @@ spring:
       properties:
         spring.json.trusted.packages: "*"
     client-topic: client
+    transaction-topic: transaction
 
   jpa:
     hibernate:

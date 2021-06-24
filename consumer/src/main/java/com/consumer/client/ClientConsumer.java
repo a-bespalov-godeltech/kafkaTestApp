@@ -13,11 +13,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ClientConsumer {
 
+  private final ClientRepository repository;
   Logger logger = LoggerFactory.getLogger(ClientConsumer.class);
 
-  private final ClientRepository repository;
-
-  @KafkaListener(id = "KafkaListenerExample", topics = "${spring.kafka.client-topic}")
+  @KafkaListener(
+      id = "Client Kafka Listener",
+      topics = "${spring.kafka.client-topic}",
+      containerFactory = "clientKafkaListenerContainerFactory")
   public void consume(Client client) {
     logger.info(client.toString());
 
