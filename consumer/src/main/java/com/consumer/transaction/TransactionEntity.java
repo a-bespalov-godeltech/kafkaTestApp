@@ -38,5 +38,7 @@ public class TransactionEntity implements Serializable {
 
   Double price;
 
+  Double value;
+
   LocalDateTime createdAt;
 }
