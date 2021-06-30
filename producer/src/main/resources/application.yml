@@ -7,3 +7,4 @@ spring:
       properties:
         spring.json.add.type.headers: false
     client-topic: client
+    transaction-topic: transaction

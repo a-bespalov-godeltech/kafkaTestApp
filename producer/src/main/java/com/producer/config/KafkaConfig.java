@@ -11,4 +11,5 @@ public class KafkaConfig {
 
   String clientTopic;
 
+  String transactionTopic;
 }

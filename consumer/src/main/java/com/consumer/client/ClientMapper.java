@@ -15,7 +15,7 @@ class ClientMapper {
     var entity = new ClientEntity();
     entity.setId(client.getClientId());
     entity.setEmail(client.getEmail());
+    entity.setStatus(ClientStatus.REAL);
     return entity;
   }
-
 }
